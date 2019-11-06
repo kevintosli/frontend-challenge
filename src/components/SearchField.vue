@@ -1,7 +1,7 @@
 <template>
   <div
     :class="[
-      'search-field-wrapper',
+      'search-field-wrapper d3-card',
       {
         __focus: input_focus
       }
@@ -9,7 +9,7 @@
   >
     <d3-icon class="icon ion-ios-search" />
     <input
-      class="__input"
+      class="_input"
       type="search"
       :placeholder="placeholder"
       @focus="onFocus"
@@ -46,11 +46,7 @@ export default {
 <style lang="scss">
 .search-field-wrapper {
   align-items: center;
-  background-color: var(--color-background-elements);
   border: 2px solid transparent;
-  border-radius: var(--border-radius);
-  box-shadow: var(--shadow-1);
-  color: var(--color-text);
   display: flex;
   flex-direction: row;
   transition-property: border-color;
@@ -62,11 +58,13 @@ export default {
     font-size: 24px;
     margin-left: 24px;
   }
-  .__input {
+  ._input {
     background: none;
     border: none;
+    color: inherit;
     display: block;
     font: inherit;
+    font-weight: 600;
     padding: 16px 24px;
     width: 100%;
 
