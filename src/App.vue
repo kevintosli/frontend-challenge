@@ -51,22 +51,25 @@ export default {
   --color-background-page: hsl(0, 0%, 98%);
   --color-input-placeholder: hsl(0, 0%, 52%);
   --color-text: hsl(200, 15%, 8%);
-  --shadow-1: 0 2px 16px rgba(0, 0, 0, 0.08);
+  --shadow-1: 0 2px 16px rgba(0, 0, 0, 0.12);
 }
 .theme-dark {
   --color-background-elements: hsl(209, 23%, 22%);
   --color-background-page: hsl(207, 26%, 17%);
   --color-input-placeholder: hsl(0, 0%, 100%);
   --color-text: hsl(0, 0%, 100%);
-  --shadow-1: 0 2px 16px rgba(0, 0, 0, 0.12);
+  --shadow-1: 0 2px 16px rgba(0, 0, 0, 0.18);
 }
 #application {
   --color-accent: #ec407a;
-  --border-radius: 4px;
+  --border-radius: 6px;
   --transition-duration: 140ms;
 }
 
 // HTML Defaults
+* {
+  box-sizing: border-box;
+}
 body {
   padding: 0;
   margin: 0;
@@ -79,6 +82,13 @@ input {
 h1 {
   margin: 0;
 }
+strong {
+  font-weight: 600;
+}
+::selection {
+  background: var(--color-accent);
+  color: white;
+}
 .unselectable {
   user-select: none;
 }
@@ -88,12 +98,21 @@ h1 {
   background-color: var(--color-background-page);
   font-family: "Nunito Sans", Helvetica, Arial, sans-serif;
   font-size: 14px;
+  font-weight: 300;
   color: var(--color-text);
-}
+  cursor: default;
 
-.g-wrapper {
-  margin: 0 auto;
-  max-width: 1280px;
+  // Common classes
+  .d3-card {
+    background-color: var(--color-background-elements);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-1);
+    color: var(--color-text);
+  }
+  .g-wrapper {
+    margin: 0 auto;
+    max-width: 1280px;
+  }
 }
 
 #navbar {
@@ -107,6 +126,10 @@ h1 {
   position: fixed;
   top: 0;
   right: 0;
+
+  @media screen and (max-width: 420px) {
+    padding: 24px 16px;
+  }
 
   .g-wrapper {
     display: flex;
@@ -123,10 +146,19 @@ h1 {
       opacity: 0.6;
     }
   }
+  .left,
+  .right {
+    align-items: center;
+    display: flex;
+    flex-direction: row;
+  }
   .left {
     flex-grow: 1;
 
     h1 {
+      @media screen and (max-width: 420px) {
+        font-size: 18px;
+      }
       font-size: 24px;
     }
   }
@@ -144,6 +176,11 @@ h1 {
 #page-content {
   padding: 48px 24px;
   padding-top: calc(48px + 82px);
-  min-height: calc(100vh - 82px);
+  min-height: 100vh;
+
+  @media screen and (max-width: 420px) {
+    padding: 48px 16px;
+    padding-top: calc(48px + 82px);
+  }
 }
 </style>
