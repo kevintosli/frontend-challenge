@@ -1,7 +1,7 @@
 const path = require("path");
 
 module.exports = {
-  publicPath: "/frontend-challenge/",
+  publicPath: "/whereintheworld/",
   configureWebpack: {
     resolve: {
       alias: {
