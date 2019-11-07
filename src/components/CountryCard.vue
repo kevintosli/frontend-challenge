@@ -8,7 +8,7 @@
       <strong>Region:</strong> {{ region }}
     </div>
     <div class="_population" v-if="population">
-      <strong>Population:</strong> {{ population }}
+      <strong>Population:</strong> {{ population.toLocaleString("en") }}
     </div>
     <div class="_capital" v-if="capital">
       <strong>Capital:</strong> {{ capital }}
@@ -38,17 +38,30 @@ export default {
 
 <style lang="scss">
 .country-card-wrapper {
+  cursor: pointer;
+  margin: 0 16px 72px;
+  width: 260px;
   overflow: hidden;
-  max-width: 260px;
   padding: 24px;
   padding-bottom: 40px;
 
   @media screen and (max-width: 420px) {
+    margin: 0 0 72px;
     max-width: 420px;
     width: auto;
   }
 
+  &:hover {
+    ._title {
+      color: var(--color-accent);
+    }
+    ._flag img {
+      transform: scale(1.08);
+    }
+  }
+
   ._flag {
+    align-items: center;
     background-color: rgba(0, 0, 0, 0.08);
     display: flex;
     flex-direction: column;
@@ -66,10 +79,12 @@ export default {
     img {
       flex-grow: 1;
       flex-shrink: 0;
-      display: block;
       min-height: 100%;
-      min-width: 100%;
-      max-width: 200%;
+      transform: scale(1);
+      transition-property: transform;
+      transition-duration: var(--transition-duration);
+      transition-timing-function: ease-out;
+      width: 100%;
     }
   }
   ._title {
