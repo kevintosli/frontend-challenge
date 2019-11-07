@@ -5,28 +5,32 @@
         <SearchField
           placeholder="Search for a country..."
           class="input-search"
+          @input="searchFor"
         />
       </div>
       <div class="right">
         <FiltersField
-          value="Filter by Region"
+          text="Filter by Region"
           :options="regions"
           class="input-filters"
+          @change="toFilter"
         />
       </div>
     </div>
 
-    <CountryCard
-      v-for="country in countries"
-      :id="country.alpha3Code"
-      :name="country.name"
-      :region="country.region"
-      :population="country.population"
-      :capital="country.capital"
-      :flag="country.flag"
-      :key="country.alpha3Code"
-      @click="countryDetails"
-    />
+    <div class="countries-list">
+      <CountryCard
+        v-for="country in shown_countries"
+        :id="country.alpha3Code"
+        :name="country.name"
+        :region="country.region"
+        :population="country.population"
+        :capital="country.capital"
+        :flag="country.flag"
+        :key="country.alpha3Code"
+        @click="countryDetails"
+      />
+    </div>
   </div>
 </template>
 
@@ -44,43 +48,81 @@ export default {
   },
   data() {
     return {
+      filter: false,
+      search: "",
       regions: [
         {
           id: 0,
-          text: "Africa"
+          text: "All regions",
+          value: false
         },
         {
           id: 1,
-          text: "America"
+          text: "Africa",
+          value: "Africa"
         },
         {
           id: 2,
-          text: "Asia"
+          text: "Americas",
+          value: "Americas"
         },
         {
           id: 3,
-          text: "Europe"
+          text: "Asia",
+          value: "Asia"
         },
         {
           id: 4,
-          text: "Oceania"
-        }
-      ],
-      countries: [
+          text: "Europe",
+          value: "Europe"
+        },
         {
-          alpha3Code: "GER",
-          name: "Germany",
-          population: 3925029,
-          capital: "Berlin",
-          region: "Europe",
-          flag: "https://restcountries.eu/data/deu.svg"
+          id: 5,
+          text: "Oceania",
+          value: "Oceania"
         }
       ]
     };
   },
+  computed: {
+    countries() {
+      return this.$parent.countries;
+    },
+    shown_countries() {
+      if (!this.filter && !this.search) return this.countries;
+      let RESULT = [];
+      if (this.filter && !this.search) {
+        RESULT = this.countries.filter(c => this.filter == c.region);
+      }
+      if (this.search) {
+        RESULT = this.countries.filter(c =>
+          c.name.toLowerCase().includes(this.search.toLowerCase())
+        );
+      }
+      return RESULT;
+    }
+  },
   methods: {
-    countryDetails(event) {
-      window.console.log(event);
+    countryDetails(code) {
+      this.$router.push({
+        name: "details",
+        params: {
+          country_code: code
+        }
+      });
+    },
+    toFilter(event) {
+      this.filter = event.value;
+    },
+    searchFor(event) {
+      setTimeout(() => {
+        this.search = event;
+      }, 320);
+    }
+  },
+  mounted() {
+    if (this.countries.length) {
+      document.title = "Where in the world?";
     }
   }
 };
@@ -104,6 +146,11 @@ export default {
       flex-shrink: 1;
     }
     .right {
+      justify-content: flex-end;
+
+      @media screen and (max-width: 420px) {
+        flex-grow: 1;
+      }
       @media screen and (min-width: 421px) {
         margin-left: 16px;
       }
@@ -120,6 +167,22 @@ export default {
       @media screen and (max-width: 420px) {
         margin-top: 48px;
       }
+    }
+  }
+
+  .countries-list {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+
+    @media screen and (min-width: 421px) {
+      margin: 0 -16px;
+    }
+
+    ._loading {
+      padding: 0 16px;
+      text-align: center;
     }
   }
 }
