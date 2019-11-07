@@ -14,6 +14,7 @@
       :placeholder="placeholder"
       @focus="onFocus"
       @blur="onBlur"
+      @input="onInput"
     />
   </div>
 </template>
@@ -38,6 +39,9 @@ export default {
     },
     onBlur() {
       this.input_focus = false;
+    },
+    onInput(e) {
+      this.$emit("input", e.target.value);
     }
   }
 };
@@ -65,6 +69,7 @@ export default {
     display: block;
     font: inherit;
     font-weight: 600;
+    outline: none;
     padding: 16px 24px;
     width: 100%;
 
