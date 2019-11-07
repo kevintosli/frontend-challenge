@@ -15,7 +15,12 @@
       ]"
       @click="toggleDropdown"
     >
-      <div class="_value">{{ value }}</div>
+      <div class="_value">
+        <template v-if="!input_selected">{{ text }}</template>
+        <template v-else
+          >Filtering by {{ input_selected }}</template
+        >
+      </div>
       <d3-icon class="icon ion-ios-arrow-down" />
     </div>
     <ul
@@ -30,6 +35,7 @@
         class="_dropdown-item"
         v-for="(option, index) in options"
         :key="index"
+        @click="onChange(option)"
         ontouchstart=""
       >
         {{ option.text }}
@@ -42,13 +48,9 @@
 export default {
   name: "FiltersField",
   props: {
-    value: {
+    text: {
       type: String,
       default: "Filter"
-    },
-    selected: {
-      type: Number,
-      default: -1
     },
     options: {
       type: Array,
@@ -58,12 +60,18 @@ export default {
   data() {
     return {
       input_focus: false,
+      input_selected: false,
       dropdown_visible: false
     };
   },
   methods: {
     toggleDropdown() {
       this.dropdown_visible = !this.dropdown_visible;
+    },
+    onChange(option) {
+      this.$emit("change", option);
+      this.input_selected = option.value;
+      this.dropdown_visible = false;
     },
     onFocus() {
       this.input_focus = true;
@@ -89,7 +97,7 @@ export default {
     flex-direction: row;
     height: 56px;
     padding: 8px 24px;
-    transition-property: border-color;
+    transition-property: border-color, color;
     transition-duration: var(--transition-duration);
     transition-timing-function: ease-out;
 
@@ -116,6 +124,8 @@ export default {
   }
 
   ._dropdown {
+    display: flex;
+    flex-direction: column;
     list-style: none;
     margin: 8px 0;
     min-width: 100%;
@@ -126,6 +136,7 @@ export default {
     transition-property: transform, opacity, visibility;
     transition-duration: var(--transition-duration);
     transition-timing-function: ease-out;
+    z-index: 405;
 
     &:not(.__visible) {
       transform: translateY(-8px);
@@ -140,9 +151,11 @@ export default {
 
     ._dropdown-item {
       border-radius: 2px;
+      flex-shrink: 0;
       margin: 0 -16px;
       padding: 0 24px;
       line-height: 36px;
+      white-space: nowrap;
 
       &:hover {
         background-color: rgba(0, 0, 0, 0.08);
