@@ -1,7 +1,7 @@
 # Where in the world?
 Hey, nice to meet ya. :v:
 
-This is a front-end project for measuring my coding knowledge.
+This is a front-end project for practicing front-end coding.
 
 [Experience the live version](https://kevintosli.github.io/whereintheworld/)
 
